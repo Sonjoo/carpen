@@ -30,9 +30,13 @@ export class CreatorProductService extends ProductService {
             product.creator = await Creator.findOneBy({id: productDto.creatorId});
             product = await manager.save(product)
         
-            await this.createMainProductDetail(productDto, product, manager);
-            await this.createProductAssets(productDto.assetUrls, product, manager);
-            return product;
+            let productDetail = await this.createMainProductDetail(productDto, product, manager);
+            let productAssets = await this.createProductAssets(productDto.assetUrls, product, manager);
+             
+            product.productAssets = productAssets;
+            product.productDetails = [productDetail];
+            
+            return product
         })
     }
 
@@ -67,11 +71,10 @@ export class CreatorProductService extends ProductService {
         productDetail.title = productDto.title;
         productDetail.description = productDto.description;
         productDetail.nation = await Nation.findOneBy({nationCode: "ko"});
-
+        
         productDetail = await transactionManager.save(productDetail);
-
-        await this.createProductImages(productDto.imageUrls, productDetail, transactionManager);
-
+        productDetail.productImages = await this.createProductImages(productDto.imageUrls, productDetail, transactionManager);
+        
         return productDetail
     }
 }

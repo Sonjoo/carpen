@@ -42,21 +42,12 @@ describe("CreatorProductService", () => {
             dto.creatorId = creator.id;
 
             let product = await creatorProductService.createProduct(dto);
-
-            product = await Product.findOne({
-                relations: {
-                    productDetails: true,
-                    productAssets: true,
-                },
-                where: {
-                    id: product.id,
-                }
-            });
-
+            
             expect(product.basePrice).toBe(dto.basePrice);
             expect(product.productAssets.length).toBe(dto.assetUrls.length);
             expect(product.productDetails.at(0).isMainDetail).toBe(true);
             expect(product.productDetails.at(0).title).toBe(dto.title);
+            expect(product.productDetails.at(0).productImages.length).toBe(dto.imageUrls.length);
         })
     })
 })
