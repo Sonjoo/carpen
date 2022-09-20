@@ -13,7 +13,11 @@ export class Product extends BaseEntity {
     @Column()
     basePrice: number;
     
-    @Column({enum: "ProductState"})
+    @Column({
+        type: "enum",
+        enum: ProductState,
+        default: ProductState.CREATED
+    })
     state: ProductState
 
     @CreateDateColumn({ name: 'created_at' })
@@ -44,7 +48,11 @@ export class ProductDetail extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({enum: "ProductDetailState"})
+    @Column({
+        type: "enum",
+        enum: ProductDetailState,
+        default: ProductDetailState.PENDING
+    })
     state: ProductDetailState;
 
     @Column()
