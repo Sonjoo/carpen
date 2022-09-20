@@ -1,4 +1,4 @@
-import { Nation } from "src/common/nation.entity";
+import { Nation } from "../common/nation.entity";
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()

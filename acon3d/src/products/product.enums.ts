@@ -1,10 +1,10 @@
-export enum ProductState {
-    CREATED,
-    EXAMINING,
-    OPEN
+export enum ProductStatus {
+    CREATED = 1,
+    EXAMINING = 2,
+    OPEN = 3
 }
 
 export enum ProductDetailState {
-    USING,
-    PENDING 
+    USING = 1,
+    PENDING = 2
 }

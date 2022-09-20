@@ -1,9 +1,9 @@
-import { Nation } from 'src/common/nation.entity';
-import { Creator } from 'src/creators/creator.entity';
-import { Editor } from 'src/editors/editor.enity';
-import { Fee } from 'src/fees/fee.entity';
+import { Nation } from '../common/nation.entity';
+import { Creator } from '../creators/creator.entity';
+import { Editor } from '../editors/editor.entity';
+import { Fee } from '../fees/fee.entity';
 import { CreateDateColumn, UpdateDateColumn, Column, Entity, PrimaryGeneratedColumn, BaseEntity, OneToOne, JoinColumn, OneToMany, ManyToOne} from 'typeorm';
-import { ProductDetailState, ProductState } from './product.enums';
+import { ProductDetailState as ProductDetailStatus, ProductStatus } from './product.enums';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -15,10 +15,10 @@ export class Product extends BaseEntity {
     
     @Column({
         type: "enum",
-        enum: ProductState,
-        default: ProductState.CREATED
+        enum: ProductStatus,
+        default: ProductStatus.CREATED
     })
-    state: ProductState
+    status: ProductStatus
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt!: Date;
@@ -39,8 +39,8 @@ export class Product extends BaseEntity {
     @ManyToOne(() => Creator, (creator) => creator.products)
     creator: Creator
 
-    @ManyToOne(() => Editor, (editor) => editor.products)
-    editor: Editor
+    @ManyToOne(() => Editor, (editor) => editor.products, {nullable: true})
+    editor: Editor | null
 }
 
 @Entity()
@@ -50,10 +50,10 @@ export class ProductDetail extends BaseEntity {
 
     @Column({
         type: "enum",
-        enum: ProductDetailState,
-        default: ProductDetailState.PENDING
+        enum: ProductDetailStatus,
+        default: ProductDetailStatus.PENDING
     })
-    state: ProductDetailState;
+    state: ProductDetailStatus;
 
     @Column()
     isMainDetail: boolean;

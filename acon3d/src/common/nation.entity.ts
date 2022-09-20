@@ -1,5 +1,5 @@
-import { Buyer } from "src/Buyers/buyer.entity";
-import { ProductDetail } from "src/products/product.entity";
+import { Buyer } from "../Buyers/buyer.entity";
+import { ProductDetail } from "../products/product.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ExchangeRate } from "./exchangeRate.entity";
 
