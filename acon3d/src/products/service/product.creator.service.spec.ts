@@ -1,12 +1,11 @@
 import { Nation } from "../../common/nation.entity";
 import { Creator } from "../../creators/creator.entity";
 import { AppDataSource } from "../../data-source";
-import { CreateProductDto } from "../dto/product.create.dto";
-import { Product } from "../product.entity";
-import { CreatorProductService } from "./product.creator.service";
+import { CreateProductDto } from "../dto/product.dto";
+import { CreatorProductCreator } from "./product.creator.service";
 
-describe("CreatorProductService", () => {
-    let creatorProductService: CreatorProductService;
+describe("CreatorProductCreator", () => {
+    let productCreator: CreatorProductCreator;
     let connection: any;
 
     beforeAll(async () => {
@@ -14,7 +13,7 @@ describe("CreatorProductService", () => {
     })
 
     beforeEach(() => {
-        creatorProductService = new CreatorProductService();
+        productCreator = new CreatorProductCreator();
     })
 
     afterAll(async () => {
@@ -41,7 +40,7 @@ describe("CreatorProductService", () => {
             dto.basePrice = 100;
             dto.creatorId = creator.id;
 
-            let product = await creatorProductService.createProduct(dto);
+            let product = await productCreator.createProduct(dto);
             
             expect(product.basePrice).toBe(dto.basePrice);
             expect(product.productAssets.length).toBe(dto.assetUrls.length);

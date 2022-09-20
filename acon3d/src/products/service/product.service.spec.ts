@@ -1,12 +1,12 @@
 import { AppDataSource } from "../../data-source";
 import { Creator } from "../../creators/creator.entity";
 import { Product } from "../product.entity";
-import { ProductService } from "./product.service";
+import { ProductRetriever } from "./product.service";
 import { ProductStatus } from "../product.enums";
 
 
 describe('ProductService', () => {
-    let productService: ProductService;
+    let productService: ProductRetriever;
     let connection: any;
 
     beforeAll(async () => {
@@ -14,7 +14,7 @@ describe('ProductService', () => {
     })
 
     beforeEach(() => {
-        productService = new ProductService();
+        productService = new ProductRetriever();
     });
   
     afterAll(async () => {
@@ -88,3 +88,5 @@ describe('ProductService', () => {
         })
     })
   });
+
+ 

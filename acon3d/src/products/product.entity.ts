@@ -2,7 +2,7 @@ import { Nation } from '../common/nation.entity';
 import { Creator } from '../creators/creator.entity';
 import { Editor } from '../editors/editor.entity';
 import { Fee } from '../fees/fee.entity';
-import { CreateDateColumn, UpdateDateColumn, Column, Entity, PrimaryGeneratedColumn, BaseEntity, OneToOne, JoinColumn, OneToMany, ManyToOne} from 'typeorm';
+import { CreateDateColumn, UpdateDateColumn, Column, Entity, PrimaryGeneratedColumn, BaseEntity, OneToOne, JoinColumn, OneToMany, ManyToOne, Unique} from 'typeorm';
 import { ProductDetailState as ProductDetailStatus, ProductStatus } from './product.enums';
 
 @Entity()
@@ -44,6 +44,7 @@ export class Product extends BaseEntity {
 }
 
 @Entity()
+@Unique(["productId", "nationId", "isMainDetail", "status"])
 export class ProductDetail extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -53,7 +54,7 @@ export class ProductDetail extends BaseEntity {
         enum: ProductDetailStatus,
         default: ProductDetailStatus.PENDING
     })
-    state: ProductDetailStatus;
+    status: ProductDetailStatus;
 
     @Column()
     isMainDetail: boolean;

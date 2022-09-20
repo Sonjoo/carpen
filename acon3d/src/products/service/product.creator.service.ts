@@ -3,14 +3,14 @@ import { IPaginationOptions, Pagination } from "nestjs-typeorm-paginate";
 import { Nation } from "../../common/nation.entity";
 import { Creator } from "../../creators/creator.entity";
 import { AppDataSource } from "../../data-source";
-import { SelectQueryBuilder } from "typeorm";
-import { CreateProductDto } from "../dto/product.create.dto";
+import { EntityManager, SelectQueryBuilder } from "typeorm";
+import { CreateProductDto, ModifyProductDto  } from "../dto/product.dto";
 import { Product, ProductAsset, ProductDetail, ProductImage } from "../product.entity";
 import { ProductStatus } from "../product.enums";
-import { ProductService } from "./product.service";
+import { ProductRetriever } from "./product.service";
 
 @Injectable()
-export class CreatorProductService extends ProductService {
+export class CreatorProductRetriever extends ProductRetriever {
     async listMyProducts(pageOptions: IPaginationOptions, creatorId: number, status?: ProductStatus): Promise<Pagination<Product>> {
         const queryBuilder: SelectQueryBuilder<Product> = Product.createQueryBuilder('p')
             .where("p.creatorId = :creatorId", {creatorId: creatorId});
@@ -21,9 +21,12 @@ export class CreatorProductService extends ProductService {
 
         return await this.listProducts(pageOptions, queryBuilder);
     }
+}
 
+@Injectable()
+export class CreatorProductCreator {
     async createProduct(productDto: CreateProductDto): Promise<Product> {
-        return AppDataSource.transaction(async (manager) => {
+        return AppDataSource.transaction(async (manager: EntityManager) => {
             let product = new Product();
 
             product.basePrice = productDto.basePrice;
@@ -39,8 +42,12 @@ export class CreatorProductService extends ProductService {
             return product
         })
     }
-
-    private async createProductAssets(urls: string[], product: Product, transactionManager): Promise<ProductAsset[]> {
+    
+    private async createProductAssets(
+        urls: string[], 
+        product: Product, 
+        transactionManager: EntityManager
+    ): Promise<ProductAsset[]> {
         let assets = new Array()
         for (let url of urls) {
             let asset = new ProductAsset();
@@ -52,7 +59,11 @@ export class CreatorProductService extends ProductService {
         return await transactionManager.save(assets);
     }
 
-    private async createProductImages(urls: string[], productDetail: ProductDetail, transactionManager): Promise<ProductImage[]> {
+    private async createProductImages(
+        urls: string[], 
+        productDetail: ProductDetail, 
+        transactionManager: EntityManager
+    ): Promise<ProductImage[]> {
         let images = new Array() 
         for (let url of urls) {
             let image = new ProductImage();
@@ -64,7 +75,11 @@ export class CreatorProductService extends ProductService {
         return await transactionManager.save(images);
     }
 
-    private async createMainProductDetail(productDto: CreateProductDto, product: Product, transactionManager): Promise<ProductDetail> {
+    private async createMainProductDetail(
+        productDto: CreateProductDto, 
+        product: Product, 
+        transactionManager: EntityManager
+    ): Promise<ProductDetail> {
         let productDetail = new ProductDetail();
         productDetail.isMainDetail = true;
         productDetail.product = product;
