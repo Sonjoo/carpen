@@ -61,7 +61,7 @@ export class ProductDetail extends BaseEntity {
     @Column()
     title: string;
 
-    @Column()
+    @Column({type: "text"})
     description: string;
    
     @CreateDateColumn({ name: 'created_at' })

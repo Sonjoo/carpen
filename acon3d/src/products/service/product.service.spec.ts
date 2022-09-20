@@ -4,10 +4,11 @@ import { Product } from "../product.entity";
 import { ProductService } from "./product.service";
 import { ProductStatus } from "../product.enums";
 
-let connection: any;
+
 describe('ProductService', () => {
     let productService: ProductService;
-    let creator: Creator;    
+    let connection: any;
+
     beforeAll(async () => {
         connection = await AppDataSource.initialize()
     })
@@ -17,12 +18,13 @@ describe('ProductService', () => {
     });
   
     afterAll(async () => {
-        await connection.synchronize(true)
+        await connection.synchronize(true);
+        await connection.close();
     })
 
     describe('getProduct', () => {
       it('존재하는 id로 product를 찾을 수 있다.', async () => {
-        creator = new Creator();
+        let creator = new Creator();
         creator.name = 'tester';
         creator.email = 'tester@test.com';
         creator.pw = 'test';
@@ -38,7 +40,7 @@ describe('ProductService', () => {
 
     describe("listProducts", () => {
         it("상태에 따라 다른 product를 찾을 수 있다.",async () => {
-            creator = new Creator();
+            let creator = new Creator();
             creator.name = 'tester';
             creator.email = 'tester2@test.com';
             creator.pw = 'test';

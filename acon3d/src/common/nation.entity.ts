@@ -1,10 +1,10 @@
 import { Buyer } from "../Buyers/buyer.entity";
 import { ProductDetail } from "../products/product.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ExchangeRate } from "./exchangeRate.entity";
 
 @Entity()
-export class Nation {
+export class Nation extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
